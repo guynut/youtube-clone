@@ -7,7 +7,7 @@ const Home:React.FC<pageProps> = ({expanded, setExpanded}) => {
   return (
     <div className='h-[93vh] w-full flex'>
       <Sidebar expanded={expanded} />
-      <Landing expanded={expanded}/>
+      <Landing expanded={expanded} setExpanded={setExpanded}/>
     </div>
   )
 }

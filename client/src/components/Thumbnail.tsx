@@ -7,7 +7,7 @@ interface ThumbnailProps {
     chanelLogo: string;
     videoLink: string;
     expanded?:boolean
-    setExpanded?: (expanded: true) => void;
+    setExpanded?: (expanded: boolean) => void;
 }
 
 export const Thumbnail: React.FC<ThumbnailProps> = ({ title, thumbnailPic, chanel, chanelLogo, videoLink, expanded, setExpanded }) => {
@@ -17,7 +17,22 @@ export const Thumbnail: React.FC<ThumbnailProps> = ({ title, thumbnailPic, chane
     };
 
     return (
-        <div className="w-full h-72 flex flex-col gap-2 text-white p-2 rounded-2xl transition-all hover:bg-neutral-800 hover:cursor-pointer">
+        <div className={`w-full ${expanded? "h-[22rem]":"h-[20rem]"} flex flex-col gap-2 text-white p-2 rounded-2xl transition-all hover:bg-neutral-700 hover:cursor-pointer`}>
+            <div onClick={()=>(navigate(`watch/${videoLink}`), handleSetExpanded())} className='h-[70%] rounded overflow-hidden'>
+                <img src={thumbnailPic} alt="" className='w-full h-full object-cover'/>
+            </div>
+            <div className='w-full h-[30%] flex gap-2'>
+                <div className='w-[10%] h-full'>
+                    <div className='w-10 h-10 rounded-full overflow-hidden'>
+                        <img src={chanelLogo} alt="" className='w-full h-full object-cover'/>
+                    </div>
+                </div>
+                <div onClick={()=>(navigate(`watch/${videoLink}`), handleSetExpanded())} className='w-[90%] flex flex-col'>
+                    <h2 className={`${expanded? "text-lg":"text-base"} line-clamp-2 `}>{title}</h2>
+                    <p className={`${expanded? "text-base":"text-sm"} text-neutral-400 `}>{chanel}</p>
+                    <p className='text-sm'>{videoLink}</p>
+                </div>
+            </div>
         </div>
     );
 };

@@ -2,9 +2,11 @@ import { useRef, useState } from 'react';
 import { NavigateBeforeRounded, NavigateNextRounded } from '@mui/icons-material';
 import { Thumbnail } from '../Thumbnail';
 
+import { DummyThumbnailData } from '../../data/StaticData';
+
 interface LandingProps{
     expanded?:boolean;
-    setExpanded?: (expanded: true) => void;
+    setExpanded?: (expanded: boolean) => void;
 }
 
 const Landing:React.FC<LandingProps> = ({expanded, setExpanded}) => {
@@ -55,17 +57,21 @@ const Landing:React.FC<LandingProps> = ({expanded, setExpanded}) => {
                     </div>
                 }
             </div>
-            <div className='w-full h-[87vh] bg-neutral-600 grid grid-cols-3'>
-                <Thumbnail title={'Lenovo Legion5 16IRX9 โน้ตบุ๊ค Gaming ระดับไฮเอนด์ เล่นเกมหรืองานหนักๆ ก็ชิล'} thumbnailPic={''} chanel={''} chanelLogo={''} videoLink={''}/>
+            <div className={`w-full h-[87vh] grid ${expanded? "grid-cols-3" : "grid-cols-4"} px-2 pt-1 overflow-scroll pb-10`}>
+                {DummyThumbnailData.map((data,index)=>(
+                    <>
+                        <Thumbnail key={index} title={data.title} thumbnailPic={data.thumbnailPic} chanel={data.chanel} chanelLogo={data.chanelLogo} videoLink={data.videoLink} setExpanded={setExpanded} expanded={expanded}/>
+                        {(expanded? index===5 : index===7) &&
+                            <div className={`${expanded? "col-span-3" : "col-span-4"}`}>
+                                <News/>
+                            </div>
+                        }
+                    </>
+                ))}
             </div>
-
-
-
-
         </div>
     )
 }
-
 type FilterBtnProps ={
     text:string
 }
@@ -74,5 +80,16 @@ const FilterBtn:React.FC<FilterBtnProps> =(props)=>{
         <button className="w-max h-fit px-3 py-1 mx-1 rounded-md bg-neutral-800 text-lg hover:bg-neutral-700 text-nowrap">{props.text}</button>
     )
 }
+
+function News(){
+    return(
+        <div className='w-full h-[40vh] my-4 rounded-md flex justify-center items-center bg-gradient-to-tl from-indigo-600 via-violet-500 to-fuchsia-600'>
+            <h1 className='text-6xl'>Youtube Clone</h1>
+        </div>
+    )
+}
+
+
+
 
 export default Landing;
