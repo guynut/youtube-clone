@@ -3,3 +3,8 @@ export interface FierbaseUser {
     email: string;
     displayName: string;
 }
+
+export interface pageProps {
+    expanded?:boolean;
+    setExpanded?(expanded:boolean):void;
+}

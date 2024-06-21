@@ -1,8 +1,14 @@
 import React from 'react'
+import { pageProps } from '../data/types'
+import Sidebar from '../components/Home/Sidebar'
+import Landing from '../components/Home/Landing'
 
-function Home() {
+const Home:React.FC<pageProps> = ({expanded, setExpanded}) => {
   return (
-    <div className='h-[92vh] w-full'>Home</div>
+    <div className='h-[93vh] w-full flex'>
+      <Sidebar expanded={expanded} />
+      <Landing expanded={expanded}/>
+    </div>
   )
 }
 

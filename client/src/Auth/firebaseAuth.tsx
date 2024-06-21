@@ -56,3 +56,11 @@ export const SignInButton: React.FC = () => {
         </button>
     );
 };
+
+export const signInFirebase = async () => {
+  try {
+      await signInWithRedirect(auth, provider);
+  } catch (err) {
+      console.error(err);
+  }
+};
