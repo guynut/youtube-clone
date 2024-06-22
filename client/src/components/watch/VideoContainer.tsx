@@ -1,30 +1,38 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, ChangeEvent } from 'react';
 import Plyr from 'plyr';
 import 'plyr/dist/plyr.css';
-import { ThumbDownAltOutlined, ThumbUpOutlined, ReplyOutlined, FileDownloadOutlined, MoreHorizOutlined, NotificationsNoneOutlined, KeyboardArrowDownOutlined, SortOutlined, VideoLibraryOutlined, PermContactCalendarOutlined } from '@mui/icons-material';
+import { ThumbDownAltOutlined,
+    ThumbUpOutlined,
+    ReplyOutlined,
+    FileDownloadOutlined,
+    MoreHorizOutlined,
+    MoreVertOutlined,
+    NotificationsNoneOutlined,
+    KeyboardArrowDownOutlined,
+    KeyboardArrowUpOutlined,
+    SortOutlined,
+    VideoLibraryOutlined,
+    PermContactCalendarOutlined } from '@mui/icons-material';
+import { DummyData, DummyComment, markers} from '../../data/StaticData';
 
 interface VideoContainerProps {
     link:string;
 }
+
 const VideoContainer:React.FC<VideoContainerProps> = ({link}) => {
-    const DummyData = {title:`'슈퍼노바' 데뷔 성공 마친 MY, '아마겟돈' 컴백 준비하셔야 합니다☄️ | aespa 에스파 ‘Armageddon’ 응원법 (Cheering Guide)'`, thumbnailPic:'/public/images/Thumbnail1.jpeg', chanel:'Guynut', chanelLogo:'/public/images/userProfile.jpg', videoLink:'bhjVUYS438bv43UVb',
-        description:`LDF interview \nwith aespa(@aespa)\n\n화보 촬영을 통해 인생 드라마를 만난 것 같은\n러블리한 에스파의 TMI 인터뷰 최/초/공/개 💬\n\n- 에스파가 추천하는 면세쇼핑 필수 아이템은?\n- 에스파가 소개하는 해외여행 꿀팁은?
-        \n에스파에 대해 좀 더 자세히 알고 싶은 MY분들 💙\n지금 바로 에스파의 TMI 인터뷰를 확인하세요 💨\n\n-\n
-        LDF interview \nwith aespa
-        \n\nLovely aespa's TMI interview that feels like\nmeeting the drama of life through a photo shoot 💬
-        \n
-        - What duty-free shopping items does aespa recommend?\n- What are the overseas travel tips introduced by aespa?
-        \n
-        People who want to know more about aespa 💙\nCheck out aespa’s TMI interview right now 💨
-        \n
-        #롯데면세점 #LOTTEDUTYFREE #LDF #DutyFree #면세점 #인터넷면세점 #롯데면세권 \n#인터뷰 #TMI인터뷰 #Interview #에스파 #aespa #카리나 #윈터 #지젤 #닝닝 #KARINA #WINTER #GISELLE #NINGNING
-        \n-
-        Facebook:  https://www.facebook.com/LOTTEDFS/
-        Instagram: https://www.instagram.com/lottedutyfree/
-        Twitter:      https://twitter.com/lottedfs_global
-        `}
-    const markers =[{time:120,label:"Point 1"},{time:248,label:"Point 2"},]
-    const [showDescription, setShowDescription] = useState(false)
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [newMessage, setNewMessage] = useState<string>('');
+    const autoExpand = () => {
+        if (textareaRef.current) {
+            const textarea = textareaRef.current;
+            textarea.style.height = '1.75rem';
+            textarea.style.height = Math.min(textarea.scrollHeight) + 'px';
+        }
+    };
+    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setNewMessage(e.target.value);
+        autoExpand();
+    };
 
     return (
         <div className='h-[93vh] w-[70vw] overflow-y-scroll'>
@@ -73,92 +81,46 @@ const VideoContainer:React.FC<VideoContainerProps> = ({link}) => {
                         </div>
                     </div>
                 </div>
-                <div className={`${showDescription?"":"hover:bg-neutral-700"} h-auto w-[96%] mt-2 bg-neutral-800 rounded-lg overflow-hidden p-3`}
-                    onClick={()=>{!showDescription && setShowDescription(true)}}
-                >
-                    <div className='flex gap-3 text-base'>
-                        <p>1,234,123 views</p>
-                        <p>Jun 23, 2024</p>
-                        <p className={`flex gap-1 font-semibold ${showDescription? "text-blue-500":"text-neutral-500"}`}>
-                            <a href="">#f2fwom</a>
-                            <a href="">#f2fwom</a>
-                        </p>
-                    </div>
-                    <div dangerouslySetInnerHTML={{ __html: `${DummyData.description}`.replace(/\n/g, '<br>') }} className={`font-light text-base ${showDescription? "" : "line-clamp-2"} `}></div>
-                    {showDescription &&
-                        <div className='flex flex-col gap-5 my-5'>
-                            <div className='flex gap-2'>
-                                <div className='h-11 w-11 rounded-full overflow-hidden'>
-                                    <img src={DummyData.chanelLogo} alt="" className='h-full w-full object-cover'/>
-                                </div>
-                                <div>
-                                    <p className='font-semibold text-lg'>{DummyData.chanel}</p>
-                                    <p className='text-sm text-neutral-300'>1.5M subscribers</p>
-                                </div>
-                            </div>
-                            <div className='flex gap-4'>
-                                <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'><VideoLibraryOutlined/><p>Videos</p></button>
-                                <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'><PermContactCalendarOutlined/><p>About</p></button>
-                                <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'>
-                                    <div className='w-7 h-7 rounded-full overflow-hidden'>
-                                        <img src="/public/icons/ig.png" alt="" className='w-full h-full object-cover' />
-                                    </div>
-                                    <p>Instagram</p>
-                                </button>
-                                <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'>
-                                    <div className='w-7 h-7 rounded-full overflow-hidden'>
-                                        <img src="/public/icons/x.avif" alt="" className='w-full h-full object-cover' />
-                                    </div>
-                                    <p>Twitter</p>
-                                </button>
-                                <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'>
-                                    <div className='w-7 h-7 rounded-full overflow-hidden'>
-                                        <img src="/public/icons/facebook.png" alt="" className='w-full h-full object-cover' />
-                                    </div>
-                                    <p>Facebook</p>
-                                </button>
-                                <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'>
-                                    <div className='w-7 h-7 rounded-full overflow-hidden'>
-                                        <img src="/public/icons/tiktok.png" alt="" className='w-full h-full object-cover' />
-                                    </div>
-                                    <p>TikTok</p>
-                                </button>
-                            </div>
-                        </div>
-                    }
-                    {showDescription?(
-                        <button onClick={()=>{showDescription && setShowDescription(false)}}>show less</button>
-                    ):(
-                        <button onClick={()=>{!showDescription && setShowDescription(true)}}>...more</button>
-                    )
-                    }
-                </div>
+                <DescriptionContainer/>
                 <div className='w-[96%] mt-5'>
                     <div className='flex gap-2 justify-start items-center'>
-                        <h4 className='text-xl'>ความคิดเห็น 204 รายการ</h4>
-                        <button className='flex'><SortOutlined/> Order By</button>
+                        <h4 className='text-xl font-bold'>{DummyComment.length} Comments</h4>
+                        <button className='flex'><SortOutlined/> Sort By</button>
                     </div>
                     <div className='w-full mt-4 flex gap-4'>
                         <div className="h-11 w-11 rounded-full overflow-hidden">
                             <img src="/public/images/userProfile.jpg" alt="" />
                         </div>
                         <div className='flex flex-col gap-2 grow'>
-                            <textarea name="" id=""className='bg-transparent border-b outline-none text-lg' placeholder='Add comment....'></textarea>
-                            {/* <input className='bg-transparent border-b outline-none text-lg'
-                                type="text"
-                                placeholder='Add comment....'
-                            /> */}
-                            <div className='flex gap-3 self-end'>
-                                <button className=' p-1 px-4 rounded-full text-lg hover:bg-neutral-700'>cancel</button>
-                                <button className='p-1 px-4 rounded-full text-lg bg-blue-600'>Send Comment</button>
-                            </div>
+                            <textarea id=""className='bg-transparent border-b outline-none text-lg h-[1.75em] resize-none' placeholder='Add comment....'
+                                name="userComment"
+                                ref={textareaRef}
+                                onChange={handleChange}
+                                value={newMessage}
+                            ></textarea>
+                            {newMessage && (
+                                <div className='flex gap-3 self-end'>
+                                    <button onClick={() => setNewMessage('')} className=' p-1 px-4 rounded-full text-lg hover:bg-neutral-700'>cancel</button>
+                                    <button className={`p-1 px-4 rounded-full text-lg  ${newMessage? "bg-blue-600" : "bg-neutral-600" }`}>Send Comment</button>
+                                </div>
+                            )}
                         </div>
                     </div>
+                    {DummyComment.length > 0 && (
+                        <>
+                            {DummyComment.map((comment,index)=>(
+                                <CommentView key={index} name={comment.user} userPic={comment.userPic} text={comment.text} like={comment.like} reply={comment.reply}/>
+                            ))}
+                        </>
+                    )}
                 </div>
             </div>
         </div>
     )
 }
+
+
+
 
 
 type Marker = {
@@ -213,4 +175,160 @@ export const VideoPlayer:React.FC<videoPlayerProps> = ({link, Thumbnail, markers
         </div>
     )
 }
+
+function DescriptionContainer(){
+    const [showDescription, setShowDescription] = useState(false)
+    return(
+        <div className={`${showDescription?"":"hover:bg-neutral-700"} h-auto w-[96%] mt-2 bg-neutral-800 rounded-lg overflow-hidden p-3`}
+            onClick={()=>{!showDescription && setShowDescription(true)}}
+        >
+            <div className='flex gap-2 text-base'>
+                <p>1,234,123 views</p>
+                <p>Jun 23, 2024</p>
+                <p className={`flex gap-1 font-semibold ${showDescription? "text-blue-500":"text-neutral-500"}`}>
+                    <a href="">#f2fwom</a>
+                    <a href="">#f2fwom</a>
+                </p>
+            </div>
+            <div dangerouslySetInnerHTML={{ __html: `${DummyData.description}`.replace(/\n/g, '<br>') }} className={`font-light text-base ${showDescription? "" : "line-clamp-2"} `}></div>
+            {showDescription &&
+                <div className='flex flex-col gap-5 my-5'>
+                    <div className='flex gap-2'>
+                        <div className='h-11 w-11 rounded-full overflow-hidden'>
+                            <img src={DummyData.chanelLogo} alt="" className='h-full w-full object-cover'/>
+                        </div>
+                        <div>
+                            <p className='font-semibold text-lg'>{DummyData.chanel}</p>
+                            <p className='text-sm text-neutral-300'>1.5M subscribers</p>
+                        </div>
+                    </div>
+                    <div className='flex gap-4'>
+                        <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'><VideoLibraryOutlined/><p>Videos</p></button>
+                        <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'><PermContactCalendarOutlined/><p>About</p></button>
+                        <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'>
+                            <div className='w-7 h-7 rounded-full overflow-hidden'>
+                                <img src="/public/icons/ig.png" alt="" className='w-full h-full object-cover' />
+                            </div>
+                            <p>Instagram</p>
+                        </button>
+                        <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'>
+                            <div className='w-7 h-7 rounded-full overflow-hidden'>
+                                <img src="/public/icons/x.avif" alt="" className='w-full h-full object-cover' />
+                            </div>
+                            <p>Twitter</p>
+                        </button>
+                        <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'>
+                            <div className='w-7 h-7 rounded-full overflow-hidden'>
+                                <img src="/public/icons/facebook.png" alt="" className='w-full h-full object-cover' />
+                            </div>
+                            <p>Facebook</p>
+                        </button>
+                        <button className='flex justify-center items-center gap-2 p-1 px-3 rounded-full font-medium ring-1 ring-neutral-600 hover:bg-neutral-600'>
+                            <div className='w-7 h-7 rounded-full overflow-hidden'>
+                                <img src="/public/icons/tiktok.png" alt="" className='w-full h-full object-cover' />
+                            </div>
+                            <p>TikTok</p>
+                        </button>
+                    </div>
+                </div>
+            }
+            {showDescription?(
+                <button onClick={()=>{showDescription && setShowDescription(false)}}>show less</button>
+            ):(
+                <button onClick={()=>{!showDescription && setShowDescription(true)}}>...more</button>
+            )
+            }
+        </div>
+    )
+}
+
+type Reply = {
+    user: string;
+    text: string;
+    userPic:string;
+    like:number
+};
+type CommentViewProps = {
+    name:string;
+    userPic:string;
+    text:string;
+    like:number;
+    reply:Reply[];
+}
+const CommentView:React.FC<CommentViewProps> = (props) =>{
+    const [showReply, SetShowReply] = useState(false)
+    return(
+        <div className='flex gap-2 mt-6'>
+            <div className='w-12 h-11 rounded-full overflow-hidden'>
+                <img src={props.userPic} alt="" className='w-full h-full object-cover'/>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex gap-1 justify-start items-end'>
+                    <p>{props.name}</p>
+                    <p className='text-sm text-neutral-500'>25 minute ago</p>
+                </div>
+                <div dangerouslySetInnerHTML={{ __html: `${props.text}`.replace(/\n/g, '<br>') }} className={`font-light text-base w-full mt-1`}></div>
+                <div className='flex mt-2 items-center'>
+                    <button className='flex gap-1 hover:bg-neutral-700 p-2 rounded-full'>
+                        <ThumbUpOutlined fontSize='small'/>
+                    </button>
+                    <p className='text-sm ml-1'>{props.like}</p>
+                    <button className='flex gap-1 mx-2 hover:bg-neutral-700 p-2 rounded-full'>
+                        <ThumbDownAltOutlined fontSize='small'/>
+                    </button>
+                    <button className='flex gap-1 hover:bg-neutral-700 p-2 px-3 rounded-full text-sm'>Reply</button>
+                </div>
+                {props.reply.length > 0 &&
+                    <div className='mt-2'>
+                        <button onClick={()=>{(showReply? SetShowReply(false) : SetShowReply(true))}} className='text-blue-400 w-fit hover:bg-sky-900 p-1 px-2 rounded-full'>
+                            {showReply? (
+                                <KeyboardArrowUpOutlined/>
+                                ):(
+                                    <KeyboardArrowDownOutlined/>
+                            )}
+                            {props.reply.length} replies
+                        </button>
+                        {showReply &&
+                            <div className='flex flex-col gap-1 mt-2'>
+                                {props.reply.map((reply,index)=>(
+                                    <ReplyView key={index} user={reply.user} text={reply.text} userPic={reply.userPic} like={reply.like}/>
+                                ))}
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div className='w-fit'>
+                <button className='hover:bg-neutral-700 rounded-full p-1 w-8 h-8 flex justify-center items-center'><MoreVertOutlined/></button>
+            </div>
+        </div>
+    )
+}
+const ReplyView:React.FC<Reply> = (props) =>{
+    return(
+        <div className='flex gap-3 mt-2'>
+            <div className='w-8 h-8 rounded-full overflow-hidden'>
+                <img src={props.userPic} alt="" className='w-full h-full object-cover'/>
+            </div>
+            <div className='flex flex-col w-full'>
+                <div className='flex gap-1 justify-start items-end'>
+                    <p>{props.user}</p>
+                    <p className='text-sm text-neutral-500'>25 minute ago</p>
+                </div>
+                <div dangerouslySetInnerHTML={{ __html: `${props.text}`.replace(/\n/g, '<br>') }} className={`font-light text-base w-full mt-1`}></div>
+                <div className='flex mt-2 items-center'>
+                    <button className='flex gap-1 hover:bg-neutral-700 p-2 rounded-full'>
+                        <ThumbUpOutlined fontSize='small'/>
+                    </button>
+                    <p className='text-sm ml-1'>{props.like}</p>
+                    <button className='flex gap-1 mx-2 hover:bg-neutral-700 p-2 rounded-full'>
+                        <ThumbDownAltOutlined fontSize='small'/>
+                    </button>
+                    <button className='flex gap-1 hover:bg-neutral-700 p-2 px-3 rounded-full text-sm'>Reply</button>
+                </div>
+            </div>
+        </div>
+    )
+}
+
 export default VideoContainer
