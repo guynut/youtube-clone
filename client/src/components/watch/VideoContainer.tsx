@@ -22,11 +22,20 @@ interface VideoContainerProps {
 const VideoContainer:React.FC<VideoContainerProps> = ({link}) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const [newMessage, setNewMessage] = useState<string>('');
+    const [isFocused, setIsFocused] = useState(false);
     const autoExpand = () => {
         if (textareaRef.current) {
             const textarea = textareaRef.current;
             textarea.style.height = '1.75rem';
             textarea.style.height = Math.min(textarea.scrollHeight) + 'px';
+        }
+    };
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+    const handleBlur = () => {
+        if (!newMessage) {
+            setIsFocused(false);
         }
     };
     const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
@@ -87,25 +96,7 @@ const VideoContainer:React.FC<VideoContainerProps> = ({link}) => {
                         <h4 className='text-xl font-bold'>{DummyComment.length} Comments</h4>
                         <button className='flex'><SortOutlined/> Sort By</button>
                     </div>
-                    <div className='w-full mt-4 flex gap-4'>
-                        <div className="h-11 w-11 rounded-full overflow-hidden">
-                            <img src="/public/images/userProfile.jpg" alt="" />
-                        </div>
-                        <div className='flex flex-col gap-2 grow'>
-                            <textarea id=""className='bg-transparent border-b outline-none text-lg h-[1.75em] resize-none' placeholder='Add comment....'
-                                name="userComment"
-                                ref={textareaRef}
-                                onChange={handleChange}
-                                value={newMessage}
-                            ></textarea>
-                            {newMessage && (
-                                <div className='flex gap-3 self-end'>
-                                    <button onClick={() => setNewMessage('')} className=' p-1 px-4 rounded-full text-lg hover:bg-neutral-700'>cancel</button>
-                                    <button className={`p-1 px-4 rounded-full text-lg  ${newMessage? "bg-blue-600" : "bg-neutral-600" }`}>Send Comment</button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <AddComment />
                     {DummyComment.length > 0 && (
                         <>
                             {DummyComment.map((comment,index)=>(
@@ -242,6 +233,13 @@ function DescriptionContainer(){
     )
 }
 
+
+
+
+
+
+
+
 type Reply = {
     user: string;
     text: string;
@@ -257,6 +255,28 @@ type CommentViewProps = {
 }
 const CommentView:React.FC<CommentViewProps> = (props) =>{
     const [showReply, SetShowReply] = useState(false)
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [newMessage, setNewMessage] = useState<string>('');
+    const [replyComment, setReplyComment] = useState(false);
+    const autoExpand = () => {
+        if (textareaRef.current) {
+            const textarea = textareaRef.current;
+            textarea.style.height = '1.75rem';
+            textarea.style.height = Math.min(textarea.scrollHeight) + 'px';
+        }
+    };
+    const handleFocus = () => {
+        setReplyComment(true);
+    };
+    const handleBlur = () => {
+        if (!newMessage) {
+            setReplyComment(false);
+        }
+    };
+    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setNewMessage(e.target.value);
+        autoExpand();
+    };
     return(
         <div className='flex gap-2 mt-6'>
             <div className='w-12 h-11 rounded-full overflow-hidden'>
@@ -276,17 +296,39 @@ const CommentView:React.FC<CommentViewProps> = (props) =>{
                     <button className='flex gap-1 mx-2 hover:bg-neutral-700 p-2 rounded-full'>
                         <ThumbDownAltOutlined fontSize='small'/>
                     </button>
-                    <button className='flex gap-1 hover:bg-neutral-700 p-2 px-3 rounded-full text-sm'>Reply</button>
+                    <button onClick={()=>setReplyComment(true)} className='flex gap-1 hover:bg-neutral-700 p-2 px-3 rounded-full text-sm'>Reply</button>
                 </div>
+                {replyComment &&
+                    <div className='w-full mt-4 flex gap-4'>
+                        <div className="h-8 w-8 rounded-full overflow-hidden">
+                            <img src={DummyData.chanelLogo} alt="" />
+                        </div>
+                        <div className='flex flex-col gap-2 grow'>
+                            <textarea id=""className='bg-transparent border-b outline-none text-lg h-[1.75em] resize-none' placeholder='Add comment....'
+                                name="userComment"
+                                ref={textareaRef}
+                                onChange={handleChange}
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
+                                value={newMessage}
+                            ></textarea>
+                            <div className='flex gap-3 self-end'>
+                                <button onClick={()=>{setNewMessage(''); setReplyComment(false)}} className=' p-1 px-4 rounded-full text-base hover:bg-neutral-700'>cancel</button>
+                                <button className={`p-1 px-4 rounded-full text-base  ${newMessage? "bg-blue-600 text-neutral-100" : "bg-neutral-800 text-neutral-500" }`}>Comment</button>
+                            </div>
+                        </div>
+                    </div>
+                }
                 {props.reply.length > 0 &&
-                    <div className='mt-2'>
-                        <button onClick={()=>{(showReply? SetShowReply(false) : SetShowReply(true))}} className='text-blue-400 w-fit hover:bg-sky-900 p-1 px-2 rounded-full'>
+                    <div className=''>
+                        <button onClick={()=>{(showReply? SetShowReply(false) : SetShowReply(true))}} className='text-blue-400 w-fit flex hover:bg-sky-900 p-1 px-2 rounded-full'>
                             {showReply? (
                                 <KeyboardArrowUpOutlined/>
                                 ):(
                                     <KeyboardArrowDownOutlined/>
                             )}
-                            {props.reply.length} replies
+                            {props.reply.length}
+                            {props.reply.length == 1? <p className='ml-1'>reply</p> : <p className='ml-1'>replies</p> }
                         </button>
                         {showReply &&
                             <div className='flex flex-col gap-1 mt-2'>
@@ -305,6 +347,28 @@ const CommentView:React.FC<CommentViewProps> = (props) =>{
     )
 }
 const ReplyView:React.FC<Reply> = (props) =>{
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [newMessage, setNewMessage] = useState<string>('');
+    const [replyComment, setReplyComment] = useState(false);
+    const autoExpand = () => {
+        if (textareaRef.current) {
+            const textarea = textareaRef.current;
+            textarea.style.height = '1.75rem';
+            textarea.style.height = Math.min(textarea.scrollHeight) + 'px';
+        }
+    };
+    const handleFocus = () => {
+        setReplyComment(true);
+    };
+    const handleBlur = () => {
+        if (!newMessage) {
+            setReplyComment(false);
+        }
+    };
+    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setNewMessage(e.target.value);
+        autoExpand();
+    };
     return(
         <div className='flex gap-3 mt-2'>
             <div className='w-8 h-8 rounded-full overflow-hidden'>
@@ -324,8 +388,77 @@ const ReplyView:React.FC<Reply> = (props) =>{
                     <button className='flex gap-1 mx-2 hover:bg-neutral-700 p-2 rounded-full'>
                         <ThumbDownAltOutlined fontSize='small'/>
                     </button>
-                    <button className='flex gap-1 hover:bg-neutral-700 p-2 px-3 rounded-full text-sm'>Reply</button>
+                    <button onClick={()=>setReplyComment(true)} className='flex gap-1 hover:bg-neutral-700 p-2 px-3 rounded-full text-sm'>Reply</button>
                 </div>
+                {replyComment &&
+                    <div className='w-full mt-4 flex gap-4'>
+                        <div className="h-8 w-8 rounded-full overflow-hidden">
+                            <img src={DummyData.chanelLogo} alt="" />
+                        </div>
+                        <div className='flex flex-col gap-2 grow'>
+                            <textarea id=""className='bg-transparent border-b outline-none text-lg h-[1.75em] resize-none' placeholder='Add comment....'
+                                name="userComment"
+                                ref={textareaRef}
+                                onChange={handleChange}
+                                onFocus={handleFocus}
+                                onBlur={handleBlur}
+                                value={newMessage}
+                            ></textarea>
+                            <div className='flex gap-3 self-end'>
+                                <button onClick={()=>{setNewMessage(''); setReplyComment(false)}} className=' p-1 px-4 rounded-full text-base hover:bg-neutral-700'>cancel</button>
+                                <button className={`p-1 px-4 rounded-full text-base  ${newMessage? "bg-blue-600 text-neutral-100" : "bg-neutral-800 text-neutral-500" }`}>Comment</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    )
+}
+
+function AddComment(){
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const [newMessage, setNewMessage] = useState<string>('');
+    const [isFocused, setIsFocused] = useState(false);
+    const autoExpand = () => {
+        if (textareaRef.current) {
+            const textarea = textareaRef.current;
+            textarea.style.height = '1.75rem';
+            textarea.style.height = Math.min(textarea.scrollHeight) + 'px';
+        }
+    };
+    const handleFocus = () => {
+        setIsFocused(true);
+    };
+    const handleBlur = () => {
+        if (!newMessage) {
+            setIsFocused(false);
+        }
+    };
+    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        setNewMessage(e.target.value);
+        autoExpand();
+    };
+    return(
+        <div className='w-full mt-4 flex gap-4'>
+            <div className="h-11 w-11 rounded-full overflow-hidden">
+                <img src={DummyData.chanelLogo} alt="" />
+            </div>
+            <div className='flex flex-col gap-2 grow'>
+                <textarea id=""className='bg-transparent border-b outline-none text-lg h-[1.75em] resize-none' placeholder='Add comment....'
+                    name="userComment"
+                    ref={textareaRef}
+                    onChange={handleChange}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    value={newMessage}
+                ></textarea>
+                {isFocused &&
+                    <div className='flex gap-3 self-end'>
+                        <button onClick={()=>{setNewMessage(''); setIsFocused(false)}} className=' p-1 px-4 rounded-full text-base hover:bg-neutral-700'>cancel</button>
+                        <button className={`p-1 px-4 rounded-full text-base  ${newMessage? "bg-blue-600 text-neutral-100" : "bg-neutral-800 text-neutral-500" }`}>Comment</button>
+                    </div>
+                }
             </div>
         </div>
     )

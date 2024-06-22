@@ -8,16 +8,11 @@ const Watch:React.FC=() => {
 
   return (
     <>
-      {videolink ? (
-        <div className="h-[93vh] w-full flex">
+      {videolink &&
+        <div className="h-[93vh] w-full flex mt-[7vh]">
           <VideoContainer link={videolink}/>
           <RecommendList/>
-        </div>):(
-          <div className="h-[93vh] w-full flex justify-center items-center">
-            <h1 className="text-2xl">Link broken or Can not found {videolink}</h1>
-          </div>
-        )
-      }
+        </div>}
     </>
   )
 }
