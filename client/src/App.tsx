@@ -45,10 +45,12 @@ function App() {
         <Routes>
           <Route path='/'>
             <Route index element={
-              <>
-                <Navbar expanded={expanded} setExpanded={setExpanded}/>
+              <div className="w-screen h-screen relative">
+                <div className="sticky top-0 ">
+                  <Navbar expanded={expanded} setExpanded={setExpanded}/>
+                </div>
                 <Home expanded={expanded} setExpanded={setExpanded}/>
-              </>
+              </div>
             }/>
             <Route path='login' element={<Login/>}/>
             <Route path='watch/:videolink' element={

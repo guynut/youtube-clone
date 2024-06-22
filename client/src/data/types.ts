@@ -19,7 +19,7 @@ export type VideoData = {
     videoLink:string;
     description?:string;
     like?:number;
-    views?:number;
+    views:number;
 }
 
 // Comment Zone In Clip

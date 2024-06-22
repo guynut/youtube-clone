@@ -35,9 +35,9 @@ const VideoContainer:React.FC<VideoContainerProps> = ({link}) => {
     };
 
     return (
-        <div className='h-[93vh] w-[70vw] overflow-y-scroll'>
-            <div className="h-auto w-[70vw] bg-neutral-950 flex flex-col items-center justify-start py-2 pb-32">
-                <div className={`w-[96%] flex justify-center items-center rounded-md overflow-hidden bg-neutral-900`}>
+        <div className='h-[93vh] w-[70vw]'>
+            <div className="h-auto w-[70vw] bg-neutral-950 flex flex-col items-center justify-start py-2 ">
+                <div className={`w-[98%] flex justify-center items-center rounded-md overflow-hidden bg-neutral-900`}>
                     <VideoPlayer link={"/public/videos/2024-05-30 01-04-23.mp4"} Thumbnail={"/public/images/Thumbnail2.webp"} markers={markers} />
                 </div>
                 <div className='w-[96%] h-auto flex flex-col mt-3'>

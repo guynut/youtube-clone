@@ -23,7 +23,7 @@ const Navbar:React.FC<pageProps>=({setExpanded, expanded})=> {
         if (setExpanded) {expanded? setExpanded(false):setExpanded(true)}
     };
     return (
-        <div className='w-[100vw] h-[7vh] bg-neutral-950 flex'>
+        <div className='w-[100vw] h-[7vh] bg-neutral-950 flex sticky top-0 z-50'>
             <div className='w-[16vw] h-full flex justify-start items-center gap-2 pl-6'>
                 <button onClick={handleSetExpanded} className='rounded-full p-1 transition-all hover:bg-neutral-600 active:bg-neutral-500'>
                     <Menu sx={{ fontSize: 32 }} className='text-white'/>
