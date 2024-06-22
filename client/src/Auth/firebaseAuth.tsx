@@ -3,10 +3,10 @@ import { auth, provider } from './FirebaseConfig';
 import { createContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signInWithRedirect, User as FirebaseUser } from 'firebase/auth';
-import { FierbaseUser } from '../data/types';
+import { userData } from '../data/types';
 
 interface AuthContextType {
-  currentUser: FierbaseUser | null;
+  currentUser: userData | null;
 }
 
 export const AuthContext = createContext<AuthContextType>({ currentUser: null });
@@ -16,7 +16,7 @@ interface AuthContextProviderProps {
 }
 
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState<FierbaseUser | null>(null);
+  const [currentUser, setCurrentUser] = useState<userData | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user: FirebaseUser | null) => {
