@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { NavigateBeforeRounded, NavigateNextRounded } from '@mui/icons-material';
 import { Thumbnail } from '../Thumbnail';
 
@@ -59,14 +59,14 @@ const Landing:React.FC<LandingProps> = ({expanded, setExpanded}) => {
             </div>
             <div className={`w-full h-[87vh] grid ${expanded? "grid-cols-3" : "grid-cols-4"} px-2 pt-1 overflow-scroll pb-10`}>
                 {DummyThumbnailData.map((data,index)=>(
-                    <>
-                        <Thumbnail key={index} title={data.title} thumbnailPic={data.thumbnailPic} chanel={data.chanel} chanelLogo={data.chanelLogo} videoLink={data.videoLink} setExpanded={setExpanded} expanded={expanded}/>
+                    <React.Fragment key={index}>
+                        <Thumbnail title={data.title} thumbnailPic={data.thumbnailPic} chanel={data.chanel} chanelLogo={data.chanelLogo} videoLink={data.videoLink} setExpanded={setExpanded} expanded={expanded}/>
                         {(expanded? index===5 : index===7) &&
                             <div className={`${expanded? "col-span-3" : "col-span-4"}`}>
                                 <News/>
                             </div>
                         }
-                    </>
+                    </React.Fragment>
                 ))}
             </div>
         </div>

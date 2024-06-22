@@ -2,7 +2,7 @@ import { useState, useContext, SetStateAction } from 'react';
 import { AuthContext, signInFirebase } from '../Auth/firebaseAuth';
 import { auth } from '../Auth/FirebaseConfig';
 import { signOut } from 'firebase/auth';
-import { Menu, AccountCircle, Search, Close, KeyboardVoiceRounded } from '@mui/icons-material';
+import { Menu, AccountCircle, Search, Close, KeyboardVoiceRounded, VideoCallOutlined, NotificationsOutlined } from '@mui/icons-material';
 import { pageProps } from '../data/types';
 
 
@@ -24,15 +24,15 @@ const Navbar:React.FC<pageProps>=({setExpanded, expanded})=> {
     };
     return (
         <div className='w-[100vw] h-[7vh] bg-neutral-950 flex'>
-            <div className='w-[16vw] h-full flex justify-center items-center gap-2'>
+            <div className='w-[16vw] h-full flex justify-start items-center gap-2 pl-6'>
                 <button onClick={handleSetExpanded} className='rounded-full p-1 transition-all hover:bg-neutral-600 active:bg-neutral-500'>
                     <Menu sx={{ fontSize: 32 }} className='text-white'/>
                 </button>
-                <div className='h-10'>
+                <a href='/' className='h-7'>
                     <img src="/public/icons/icon-Ghouse.png" alt="" className='w-full h-full object-contain'/>
-                </div>
+                </a>
             </div>
-            <div className='w-[73vw] h-full flex gap-4 justify-center items-center'>
+            <div className='grow h-full flex gap-4 justify-center items-center'>
                 <div className={`w-[60%] relative h-fit bg-neutral-900 flex justify-center items-center rounded-full ring-1 ${isFocused ? 'ring-blue-600' : 'ring-neutral-700'}`}>
                     <input type="text" className='w-[90%] px-4 py-1 bg-transparent outline-none text-lg placeholder:text-neutral-400'
                         placeholder='Search..'
@@ -57,11 +57,18 @@ const Navbar:React.FC<pageProps>=({setExpanded, expanded})=> {
                     <KeyboardVoiceRounded sx={{ fontSize: 25 }} className=''/>
                 </button>
             </div>
-            <div className='w-[11vw] h-full flex justify-end items-center pr-3 '>
+            <div className=' h-full flex gap-3 justify-end items-center pr-7 '>
                 {currentUser?
-                    <div onClick={()=>signOut(auth)} className='w-12 h-12 rounded-full overflow-hidden'>
-                        <img src="/public/images/userProfile.jpg" alt="" className='h-full object-cover'/>
-                    </div>
+                    <>
+                        <button className='p-2 rounded-full hover:bg-neutral-800'><VideoCallOutlined  sx={{ fontSize: 28 }}/></button>
+                        <div className='relative'>
+                            <button className='p-2 rounded-full hover:bg-neutral-800'><NotificationsOutlined  sx={{ fontSize: 28 }}/></button>
+                            <p className='w-fit absolute top-2 right-0 px-1 rounded-full bg-red-700 text-xs'>2+</p>
+                        </div>
+                        <div onClick={()=>signOut(auth)} className='w-10 h-10 rounded-full overflow-hidden'>
+                            <img src="/public/images/userProfile.jpg" alt="" className='h-full object-cover'/>
+                        </div>
+                    </>
                 :
                     <button onClick={()=>signInFirebase()} className='w-fit h-fit flex items-center gap-1 bg-neutral-950 rounded-full p-1 px-3 border border-neutral-600 hover:bg-opacity-30 hover:ring-blue-700 hover:bg-blue-700'>
                         <AccountCircle className='text-sky-500' />

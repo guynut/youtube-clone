@@ -1,7 +1,7 @@
 import React from 'react'
 import { pageProps } from '../data/types'
-import Sidebar from '../components/Home/Sidebar'
-import Landing from '../components/Home/Landing'
+import Sidebar from '../components/home/Sidebar'
+import Landing from '../components/home/Landing'
 
 const Home:React.FC<pageProps> = ({expanded, setExpanded}) => {
   return (

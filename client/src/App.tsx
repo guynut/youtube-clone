@@ -51,7 +51,12 @@ function App() {
               </>
             }/>
             <Route path='login' element={<Login/>}/>
-            <Route path='watch/:videolink' element={<Watch/>}/>
+            <Route path='watch/:videolink' element={
+              <>
+                <Navbar expanded={expanded} setExpanded={setExpanded}/>
+                <Watch/>
+              </>
+            }/>
             <Route path='chanel' element={<Chanel/>}/>
             <Route path='search' element={<Search/>}/>
             <Route path='*' element={<Notfound/>}/>
