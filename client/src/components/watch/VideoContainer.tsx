@@ -20,28 +20,6 @@ interface VideoContainerProps {
 }
 
 const VideoContainer:React.FC<VideoContainerProps> = ({link}) => {
-    const textareaRef = useRef<HTMLTextAreaElement>(null);
-    const [newMessage, setNewMessage] = useState<string>('');
-    const [isFocused, setIsFocused] = useState(false);
-    const autoExpand = () => {
-        if (textareaRef.current) {
-            const textarea = textareaRef.current;
-            textarea.style.height = '1.75rem';
-            textarea.style.height = Math.min(textarea.scrollHeight) + 'px';
-        }
-    };
-    const handleFocus = () => {
-        setIsFocused(true);
-    };
-    const handleBlur = () => {
-        if (!newMessage) {
-            setIsFocused(false);
-        }
-    };
-    const handleChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        setNewMessage(e.target.value);
-        autoExpand();
-    };
 
     return (
         <div className='h-[93vh] w-[70vw]'>
