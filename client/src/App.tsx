@@ -10,6 +10,9 @@ import Watch from "./pages/Watch";
 import Chanel from "./pages/Chanel";
 import Search from "./pages/Search";
 import Notfound from "./pages/Notfound";
+import DragTest from "./pages/DragTest";
+import TextEditor from "./pages/TextEditor";
+import Landing from "./pages/Landing";
 
 function App() {
   const { currentUser } = useContext(AuthContext);
@@ -61,6 +64,9 @@ function App() {
             }/>
             <Route path='chanel' element={<Chanel/>}/>
             <Route path='search' element={<Search/>}/>
+            <Route path='drag' element={<DragTest/>}/>
+            <Route path='textEditor' element={<TextEditor/>}/>
+            <Route path='landing' element={<Landing/>}/>
             <Route path='*' element={<Notfound/>}/>
           </Route>
         </Routes>
